@@ -1,14 +1,56 @@
 import requests
 import re
 
+def getVariety(species_data, name_length, debug):
+    variety_names = []
+    variety_names_short = []
+    if(species_data == "nidoran"):
+        variety_names_short.append("m")
+        variety_names_short.append("f")
+    else:
+        variety_dict = species_data['varieties']
+        for variety in variety_dict:
+            variety_names.append(variety['pokemon']['name'])
+
+        
+        for name in variety_names:
+            if 'gmax' not in name:
+                variety_names_short.append(name[name_length+1:])
+
+    if debug:
+        return variety_names_short[0]
+    
+    print("This pokemon has varieties: \n")
+    for name in variety_names_short:
+        print(f"{name}\n")
+    
+
+    user_variety = input("Which variety would you like?\n")
+    while user_variety not in variety_names_short:
+        user_variety = input("Please enter a valid variety:")
+    
+    return user_variety
+
+
+    
 
 def getType(pokemon_name):
 
-
-    #Replace all instances of a space with a '-' for url compatability
+    #Replace all instances of a space with a '-' for url compatability and apply regex
     pokemon_name = pokemon_name.replace(' ', '-')
     pattern = r'[^a-zA-Z0-9-]'
     pokemon_name = re.sub(pattern, '', pokemon_name)
+
+    if(pokemon_name.lower() == "nidoranm" or pokemon_name.lower() == "nidoran male"):
+        pokemon_name = "nidoran_m"
+    elif(pokemon_name.lower() == "nidoranf" or pokemon_name.lower() == "nidoran female"):
+        pokemon_name = "nidoran_f"
+    elif(pokemon_name.lower() == "nidoran"):
+        gender = getVariety("nidoran", len(pokemon_name), False)
+        if gender == "m":
+            pokemon_name = "nidoran-m"
+        else:
+            pokemon_name = "nidoran-f"
 
     pokemon_url = f"https://pokeapi.co/api/v2/pokemon/{pokemon_name.lower()}"
 
@@ -30,9 +72,8 @@ def getType(pokemon_name):
 
         varieties_info = species_data['varieties']
 
-        print(f"{pokemon_name} has varieties!\n")
-
-        return []
+        user_variety = getVariety(species_data, len(pokemon_name), False)
+        pokemon_url = f"https://pokeapi.co/api/v2/pokemon/{pokemon_name.lower()}-{user_variety}"
     
 
     # if len(varieties_info) == 1:
@@ -85,7 +126,7 @@ def getWeaknesses(types):
 
     if response.status_code != 200:
         
-        print("Type not found!\n")
+        print("Type not found!\n") # should not happen ever
 
         return None
     
@@ -160,25 +201,40 @@ def printEffectiveness(effectiveness):
             superWeak.append(type)
         else:
             print("Error: Effectiveness value is not between 0-5\n")
-        
+
+    print("---------------------------------------------")
     print("Immune: ")
     for type in immune:
         print(f"{type} ")
+    if not immune:
+        print("N/A")
     print("\nDouble Not Effective: ")
     for type in superResistant:
         print(f"{type} ")
+    if not superResistant:
+        print("N/A")
     print("\nNot Effective: ")
     for type in resistant:
         print(f"{type} ")
+    if not resistant:
+        print("N/A")
     print("\nNeutral: ")
     for type in neutral:
         print(f"{type} ")
+    if not neutral:
+        print("N/A")
     print("\nSuper Effective: ")
     for type in weak:
         print(f"{type} ")
+    if not weak:
+        print("N/A")
     print("\nDouble Super Effective: ")
     for type in superWeak:
         print(f"{type} ")
+    if not superWeak:
+        print("N/A")
+
+    print("---------------------------------------------\n")
 
 
     
