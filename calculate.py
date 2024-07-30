@@ -33,9 +33,7 @@ def getVariety(species_data, name_length, debug):
 
 
     
-
-def getType(pokemon_name):
-
+def getPokemonData(pokemon_name):
     #Replace all instances of a space with a '-' for url compatability and apply regex
     pokemon_name = pokemon_name.replace(' ', '-')
     pattern = r'[^a-zA-Z0-9-]'
@@ -74,19 +72,12 @@ def getType(pokemon_name):
 
         user_variety = getVariety(species_data, len(pokemon_name), False)
         pokemon_url = f"https://pokeapi.co/api/v2/pokemon/{pokemon_name.lower()}-{user_variety}"
-    
-
-    # if len(varieties_info) == 1:
-    #     pokemon_url = varieties_info[0]['pokemon']['url']
-
-    # else:
-    #     print(f"{pokemon_name} has varieties!")
-
-    #     return None
 
     pokemon_response = requests.get(pokemon_url)
 
-    pokemon_data = pokemon_response.json()
+    return pokemon_response.json()
+
+def getType(pokemon_data):
 
     types_info = pokemon_data['types']
 
@@ -202,39 +193,48 @@ def printEffectiveness(effectiveness):
         else:
             print("Error: Effectiveness value is not between 0-5\n")
 
-    print("---------------------------------------------")
-    print("Immune: ")
-    for type in immune:
-        print(f"{type} ")
-    if not immune:
-        print("N/A")
-    print("\nDouble Not Effective: ")
-    for type in superResistant:
-        print(f"{type} ")
-    if not superResistant:
-        print("N/A")
-    print("\nNot Effective: ")
-    for type in resistant:
-        print(f"{type} ")
-    if not resistant:
-        print("N/A")
-    print("\nNeutral: ")
-    for type in neutral:
-        print(f"{type} ")
-    if not neutral:
-        print("N/A")
-    print("\nSuper Effective: ")
-    for type in weak:
-        print(f"{type} ")
-    if not weak:
-        print("N/A")
-    print("\nDouble Super Effective: ")
-    for type in superWeak:
-        print(f"{type} ")
-    if not superWeak:
-        print("N/A")
+    # print("---------------------------------------------")
+    # print("Immune: ")
+    # for type in immune:
+    #     print(f"{type} ")
+    # if not immune:
+    #     print("N/A")
+    # print("\nDouble Not Effective: ")
+    # for type in superResistant:
+    #     print(f"{type} ")
+    # if not superResistant:
+    #     print("N/A")
+    # print("\nNot Effective: ")
+    # for type in resistant:
+    #     print(f"{type} ")
+    # if not resistant:
+    #     print("N/A")
+    # print("\nNeutral: ")
+    # for type in neutral:
+    #     print(f"{type} ")
+    # if not neutral:
+    #     print("N/A")
+    # print("\nSuper Effective: ")
+    # for type in weak:
+    #     print(f"{type} ")
+    # if not weak:
+    #     print("N/A")
+    # print("\nDouble Super Effective: ")
+    # for type in superWeak:
+    #     print(f"{type} ")
+    # if not superWeak:
+    #     print("N/A")
 
-    print("---------------------------------------------\n")
+    # print("---------------------------------------------\n")
+
+    return {
+        "immune": immune,
+        "superResistant": superResistant,
+        "resistant": resistant,
+        "neutral": neutral,
+        "weak": weak,
+        "superWeak": superWeak
+    }
 
 
     

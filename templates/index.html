@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pokemon Type Weaknesses</title>
+</head>
+<body>
+    <h1>Enter a Pokemon</h1>
+    <form method="POST">
+        <label for="pokemon_name">Pokemon Name:</label>
+        <input type="text" id="pokemon_name" name="pokemon_name" required>
+        <button type="submit">Submit</button>
+    </form>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</body>
+</html>
