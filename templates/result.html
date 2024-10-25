@@ -3,15 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <title>Pokemon Weaknesses</title>
+    <link rel = "stylesheet" href="{{ url_for('static', filename='resultStyles.css') }}">
+
 </head>
 <body>
-    <h1>Pokemon Weaknesses</h1>
-    <p>Immune: {{ effectiveness.immune }}</p>
-    <p>Double Not Effective: {{ effectiveness.superResistant }}</p>
-    <p>Not Effective: {{ effectiveness.resistant }}</p>
-    <p>Neutral: {{ effectiveness.neutral }}</p>
-    <p>Super Effective: {{ effectiveness.weak }}</p>
-    <p>Double Super Effective: {{ effectiveness.superWeak }}</p>
-    <a href="/">Go Back</a>
+    <h1 id = "pokemon_name">{{ varietyList[index].name }}</h1>
+    <img src= "{{ varietyList[index].image }}" alt = "{{ varietyList[index].name }}">
+    <h2>Type:</h2>
+    {% for type in varietyList[index].type %}
+    <img src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
+    {% endfor %}
+    <h3>Matchups:</h3>
+    <p>0x:
+        {% for type in varietyList[index].weaknesses.immune %}
+        <img src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
+        {% endfor %}
+    </p>
+    <p>1/4x:
+        {% for type in varietyList[index].weaknesses.superResistant %}
+        <img src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
+        {% endfor %}
+    </p>
+    <p>Not Very Effective:
+        {% for type in varietyList[index].weaknesses.resistant %}
+        <img src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
+        {% endfor %}
+    </p>
+    <p>Neutral:
+        {% for type in varietyList[index].weaknesses.neutral %}
+        <img src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
+        {% endfor %}
+    </p>
+    <p>Super Effective:
+        {% for type in varietyList[index].weaknesses.weak %}
+        <img src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
+        {% endfor %}
+    </p>
+    <p>4x:
+        {% for type in varietyList[index].weaknesses.superWeak %}
+        <img src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
+        {% endfor %}
+    </p>
+
+    <select id = varietySelect>
+        {% for variety in varietyList %}
+        <option>{{ variety.name }}</option>
+        {% endfor %}
+    </select>
+
+
+    <form method="GET">
+        <button type="submit">Go back</button>
+    </form>
 </body>
 </html>

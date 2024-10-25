@@ -1,35 +1,41 @@
 import requests
 import re
 
-def getVariety(species_data, name_length, debug):
-    variety_names = []
-    variety_names_short = []
-    if(species_data == "nidoran"):
-        variety_names_short.append("m")
-        variety_names_short.append("f")
-    else:
-        variety_dict = species_data['varieties']
-        for variety in variety_dict:
-            variety_names.append(variety['pokemon']['name'])
+class Pokemon:
 
+    image = None
+    type = None
+    weaknesses = None
+
+    def __init__(self, name, url, data):
+        self.name = name
+        self.url = url
+        self.data = data
+        self.image = ""
+        self.type = []
+        self.weaknesses = {}
+
+    def printEverything(self):
+
+        print(self.name)
+        print(self.url)
+        print(self.data)
+        print(self.image)
+        print(self.type)
+        print(self.weaknesses)
         
-        for name in variety_names:
-            if 'gmax' not in name:
-                variety_names_short.append(name[name_length+1:])
 
-    if debug:
-        return variety_names_short[0]
-    
-    print("This pokemon has varieties: \n")
-    for name in variety_names_short:
-        print(f"{name}\n")
-    
 
-    user_variety = input("Which variety would you like?\n")
-    while user_variety not in variety_names_short:
-        user_variety = input("Please enter a valid variety:")
-    
-    return user_variety
+
+def getVarieties(species_data):
+    if not species_data:
+        return None
+    variety_names = []
+    variety_dict = species_data['varieties']
+    for variety in variety_dict:
+        variety_names.append(variety['pokemon']['name'])
+
+    return variety_names
 
 
     
@@ -39,47 +45,47 @@ def getPokemonData(pokemon_name):
     pattern = r'[^a-zA-Z0-9-]'
     pokemon_name = re.sub(pattern, '', pokemon_name)
 
+    #If the name results in nothing then we can just return None right away
+    if not pokemon_name:
+        return None
+
     if(pokemon_name.lower() == "nidoranm" or pokemon_name.lower() == "nidoran male"):
-        pokemon_name = "nidoran_m"
+        pokemon_name = "nidoran-m"
     elif(pokemon_name.lower() == "nidoranf" or pokemon_name.lower() == "nidoran female"):
-        pokemon_name = "nidoran_f"
-    elif(pokemon_name.lower() == "nidoran"):
-        gender = getVariety("nidoran", len(pokemon_name), False)
-        if gender == "m":
-            pokemon_name = "nidoran-m"
-        else:
-            pokemon_name = "nidoran-f"
+        pokemon_name = "nidoran-f"
 
-    pokemon_url = f"https://pokeapi.co/api/v2/pokemon/{pokemon_name.lower()}"
+    species_url = f"https://pokeapi.co/api/v2/pokemon-species/{pokemon_name.lower()}"
 
-    pokemon_response = requests.get(pokemon_url)
+    species_response = requests.get(species_url)
 
-    if pokemon_response.status_code != 200:
+    if species_response.status_code != 200:
+        
+        print(f"{pokemon_name} not found!")
 
-        species_url = f"https://pokeapi.co/api/v2/pokemon-species/{pokemon_name.lower()}"
+        return None
+    
+    species_data = species_response.json()
+    varieties = getVarieties(species_data)
 
-        species_response = requests.get(species_url)
+    pokemon_varieties = []
 
-        if species_response.status_code != 200:
-            
+    for variety in varieties:
+        pokemon_url = f"https://pokeapi.co/api/v2/pokemon/{variety}"
+        pokemon_response = requests.get(pokemon_url)
+        if pokemon_response.status_code != 200:
             print(f"{pokemon_name} not found!")
-
             return None
+        pokemon_data = pokemon_response.json()
+        pokemon_varieties.append(Pokemon(variety, pokemon_url, pokemon_data))
 
-        species_data = species_response.json()
+    return pokemon_varieties
+    
 
-        varieties_info = species_data['varieties']
+def getType(pokemon):
+    if not pokemon:
+        return
 
-        user_variety = getVariety(species_data, len(pokemon_name), False)
-        pokemon_url = f"https://pokeapi.co/api/v2/pokemon/{pokemon_name.lower()}-{user_variety}"
-
-    pokemon_response = requests.get(pokemon_url)
-
-    return pokemon_response.json()
-
-def getType(pokemon_data):
-
-    types_info = pokemon_data['types']
+    types_info = pokemon.data['types']
 
     pokemon_types = []
 
@@ -88,8 +94,17 @@ def getType(pokemon_data):
 
     return pokemon_types
     
+def getAllTypes(pokemon_varieties):
+    if not pokemon_varieties:
+        return None
+    
+    for pokemon in pokemon_varieties:
+        pokemon.type = getType(pokemon)
 
-def getWeaknesses(types):
+def getWeaknesses(pokemon):
+    if not pokemon:
+        return None
+
     effectiveness = {
         'normal': 3,
         'fire': 3,
@@ -111,17 +126,9 @@ def getWeaknesses(types):
         'fairy': 3
     }
     
-    url = f"https://pokeapi.co/api/v2/type/{types[0]}"
+    url = f"https://pokeapi.co/api/v2/type/{pokemon.type[0]}"
 
     response = requests.get(url)
-
-    if response.status_code != 200:
-        
-        print("Type not found!\n") # should not happen ever
-
-        return None
-    
-
 
     data = response.json()
     damage_relations = data['damage_relations']
@@ -136,18 +143,10 @@ def getWeaknesses(types):
         effectiveness[type['name']] = 0
 
     
-    if len(types) == 2:
-        url = f"https://pokeapi.co/api/v2/type/{types[1]}"
+    if len(pokemon.type) == 2:
+        url = f"https://pokeapi.co/api/v2/type/{pokemon.type[1]}"
 
         response = requests.get(url)
-
-        if response.status_code != 200:
-            
-            print("Type not found!\n")
-
-            return None
-        
-
 
         data = response.json()
         damage_relations = data['damage_relations']
@@ -163,12 +162,10 @@ def getWeaknesses(types):
         for type in damage_relations['no_damage_from']:
             effectiveness[type['name']] = 0
 
-    #print(effectiveness)
-
     return effectiveness
 
+def getEffectiveness(effectiveness):
 
-def printEffectiveness(effectiveness):
     immune = []
     superResistant = []
     resistant = []
@@ -193,40 +190,6 @@ def printEffectiveness(effectiveness):
         else:
             print("Error: Effectiveness value is not between 0-5\n")
 
-    # print("---------------------------------------------")
-    # print("Immune: ")
-    # for type in immune:
-    #     print(f"{type} ")
-    # if not immune:
-    #     print("N/A")
-    # print("\nDouble Not Effective: ")
-    # for type in superResistant:
-    #     print(f"{type} ")
-    # if not superResistant:
-    #     print("N/A")
-    # print("\nNot Effective: ")
-    # for type in resistant:
-    #     print(f"{type} ")
-    # if not resistant:
-    #     print("N/A")
-    # print("\nNeutral: ")
-    # for type in neutral:
-    #     print(f"{type} ")
-    # if not neutral:
-    #     print("N/A")
-    # print("\nSuper Effective: ")
-    # for type in weak:
-    #     print(f"{type} ")
-    # if not weak:
-    #     print("N/A")
-    # print("\nDouble Super Effective: ")
-    # for type in superWeak:
-    #     print(f"{type} ")
-    # if not superWeak:
-    #     print("N/A")
-
-    # print("---------------------------------------------\n")
-
     return {
         "immune": immune,
         "superResistant": superResistant,
@@ -236,8 +199,31 @@ def printEffectiveness(effectiveness):
         "superWeak": superWeak
     }
 
+def getAllEffectiveness(pokemon_varieties):
 
-    
+    for pokemon in pokemon_varieties:
+        pokemon.weaknesses = getEffectiveness(getWeaknesses(pokemon))
+
+def getImage(pokemon):
+    return pokemon.data['sprites']['front_default']
+
+def getAllImages(pokemon_varieties):
+    for pokemon in pokemon_varieties:
+        pokemon.image = getImage(pokemon)
+
+
+def getEverything(pokemon_name):
+    if not pokemon_name:
+        return None
+    varieties = getPokemonData(pokemon_name)
+    if not varieties:
+        return None
+    getAllTypes(varieties)
+    getAllEffectiveness(varieties)
+    getAllImages(varieties)
+
+    return varieties
+
 
 
 
