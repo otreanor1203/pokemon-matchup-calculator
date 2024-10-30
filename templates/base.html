@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}DEFAULT{% endblock %}</title>
+        <link rel = "stylesheet" href="{{ url_for('static', filename='defaultStyles.css') }}">
+        {% block style %}{% endblock %}
+    </head>
+    <body>
+    <nav class="navbar">
+        <ul>
+            <li><a href = "{{ url_for('index') }}">Home</a></li>
+            <li> <a href = "{{ url_for('about') }}">About</a></li>
+        </ul>
+    </nav>
+        
+{% block content %}
+
+{% endblock %}

@@ -1,9 +1,5 @@
-#pokemon_name{
+#pokemonName{
     text-transform: capitalize;
     font-weight: bolder;
     color: gold;
-}
-
-body{
-    background-color: gray;
 }

@@ -1,13 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Pokemon Weaknesses</title>
-    <link rel = "stylesheet" href="{{ url_for('static', filename='resultStyles.css') }}">
+{% extends 'base.html' %}
 
-</head>
-<body>
-    <h1 id = "pokemon_name">{{ varietyList[index].name }}</h1>
+{% block title %}{{ varietyList[index].name.capitalize() }} Data{% endblock %}
+
+{% block style %}<link rel = "stylesheet" href="{{ url_for('static', filename='resultStyles.css') }}">{% endblock %}
+
+{% block content %}
+
+    <h1 id = "pokemonName">{{ varietyList[index].name }}</h1>
     <img src= "{{ varietyList[index].image }}" alt = "{{ varietyList[index].name }}">
     <h2>Type:</h2>
     {% for type in varietyList[index].type %}
@@ -50,10 +49,7 @@
         <option>{{ variety.name }}</option>
         {% endfor %}
     </select>
-
-
-    <form method="GET">
-        <button type="submit">Go back</button>
-    </form>
 </body>
 </html>
+
+{% endblock %}

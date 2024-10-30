@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+
+    /* Navbar styling */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 1rem;
+    }
+
+    /* Navigation links styling */
+    .navbar ul {
+    list-style: none;
+    display: flex;
+    }
+
+.navbar ul li {
+    margin-left: 1rem;
+    }
+
+.navbar ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease;
+    }
+
+    /* Hover effect for links */
+.navbar ul li a:hover {
+    background-color: #555;
+    }
+
+body{
+    background-color: gray;
+}

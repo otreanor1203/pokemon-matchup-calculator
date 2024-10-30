@@ -1,16 +1,15 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Pokemon Type Weaknesses</title>
-        <link rel = "stylesheet" href="{{ url_for('static', filename='indexStyles.css') }}">
-    </head>
-    <body>
+{% block title %}Pokemon App{% endblock %}
+
+{% block style %}<link rel = "stylesheet" href="{{ url_for('static', filename='indexStyles.css') }}">{% endblock %}
+
+{% block content %}
+
         <h1>Enter a Pokemon</h1>
         <form method="POST">
-            <label for="pokemon_name">Pokemon Name:</label>
-            <input type="text" id="pokemon_name" name="pokemon_name" required>
+            <label for="pokemonName">Pokemon Name:</label>
+            <input type="text" id="pokemonName" name="pokemonName" required>
             <button type="submit">Submit</button>
         </form>
         {% if error %}
@@ -18,3 +17,5 @@
         {% endif %}
     </body>
 </html>
+
+{% endblock %}
