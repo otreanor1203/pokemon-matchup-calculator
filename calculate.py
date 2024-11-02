@@ -223,8 +223,3 @@ def getEverything(pokemon_name):
     getAllImages(varieties)
 
     return varieties
-
-
-
-
-

@@ -2,14 +2,14 @@
 
 {% block title %}Pokemon App{% endblock %}
 
-{% block style %}<link rel = "stylesheet" href="{{ url_for('static', filename='indexStyles.css') }}">{% endblock %}
+{% block style %}<link rel = "stylesheet" href="{{ url_for('static', filename='styleSheets/indexStyles.css') }}">{% endblock %}
 
 {% block content %}
 
         <h1>Enter a Pokemon</h1>
         <form method="POST">
-            <label for="pokemonName">Pokemon Name:</label>
-            <input type="text" id="pokemonName" name="pokemonName" required>
+            <label for="homeSearch">Pokemon Name:</label>
+            <input type="search" id="homeSearch" name="homeSearch" required>
             <button type="submit">Submit</button>
         </form>
         {% if error %}

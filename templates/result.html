@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ varietyList[index].name.capitalize() }} Data{% endblock %}
+{% block title %}{{ pokemonName.capitalize() }} Data{% endblock %}
 
-{% block style %}<link rel = "stylesheet" href="{{ url_for('static', filename='resultStyles.css') }}">{% endblock %}
+{% block style %}<link rel = "stylesheet" href="{{ url_for('static', filename='styleSheets/resultStyles.css') }}">{% endblock %}
 
 {% block content %}
 
-    <h1 id = "pokemonName">{{ varietyList[index].name }}</h1>
-    <img src= "{{ varietyList[index].image }}" alt = "{{ varietyList[index].name }}">
+    <h1 id = "pokemonName">{{ pokemonName.capitalize() }}</h1>
+    <img id = pokemonImage src= "{{ varietyList[index].image }}" alt = "{{ varietyList[index].name }}">
     <h2>Type:</h2>
     {% for type in varietyList[index].type %}
     <img src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
     {% endfor %}
     <h3>Matchups:</h3>
-    <p>0x:
+    <p>Immune:
         {% for type in varietyList[index].weaknesses.immune %}
         <img src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
         {% endfor %}

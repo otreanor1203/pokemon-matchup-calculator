@@ -3,3 +3,8 @@
     font-weight: bolder;
     color: gold;
 }
+
+#pokemonImage{
+    width: 150;
+    height: 150px;
+}
