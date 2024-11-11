@@ -30,16 +30,24 @@ document.getElementById('homeSearch').addEventListener('input', async function()
 function displaySuggestions(suggestions) {
     const suggestionsDiv = document.getElementById('suggestions');
     suggestionsDiv.innerHTML = '';
-    suggestions.forEach(name => {
+    suggestions.forEach(pair => {
+        name = pair[0]
+        image = pair[1]
         const div = document.createElement('div');
-        div.innerText = name;
+        div.innerText = name + " ";
         div.classList.add("suggestion")
+        suggestionsDiv.appendChild(div);
+        const img = document.createElement('img');
+        img.src = image;
+        img.alt = name;
+        img.width = 100;
+        img.length = 100;
+        div.appendChild(img);
         div.addEventListener('click', () => {
             document.getElementById('homeSearch').value = name;
             suggestionsDiv.innerHTML = '';
             document.getElementById('submitButton').click();
         });
-        suggestionsDiv.appendChild(div);
     });
 }
 </script>

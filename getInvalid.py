@@ -19,3 +19,6 @@ for name in namesList:
             invalidNames.write(f"{name}")
         else:
             print(f"{name[:-1]}: Good!")
+
+file.close()
+invalidNames.close()

@@ -14,7 +14,6 @@ Weedle
 Kakuna
 Beedrill
 Pidgey
-Josh
 Pidgeotto
 Pidgeot
 Rattata

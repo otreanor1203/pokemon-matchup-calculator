@@ -6,7 +6,7 @@ h1 {
 }
 
 .searchDiv {
-  margin-left: 1%;
+  margin-left: 5%;
   margin-right: 1%;
 }
 
@@ -14,13 +14,13 @@ h1 {
   font-size: 70px;
 }
 
-#suggestions {
-  padding-left: 5%;
-}
+/* #suggestions {
+  padding-right: 4%;
+} */
 
 .suggestion {
   font-size: 70px;
-  max-width: 91%;
+  max-width: 93.8%;
 }
 
 .suggestion:hover {
@@ -33,7 +33,7 @@ h1 {
 }
 
 .mybutton:hover{
-  background-color: #29cd29;
+  border: 2px solid white;
 }
 
 button img {

@@ -3,10 +3,6 @@ import re
 
 class Pokemon:
 
-    image = None
-    type = None
-    weaknesses = None
-
     def __init__(self, name, url, data):
         self.name = name
         self.url = url
@@ -14,6 +10,14 @@ class Pokemon:
         self.image = ""
         self.type = []
         self.weaknesses = {}
+
+    def __init__(self, name, url, data, image, type, weaknesses):
+        self.name = name
+        self.url = url
+        self.data = data
+        self.image = image
+        self.type = type
+        self.weaknesses = weaknesses
 
     def printEverything(self):
 
