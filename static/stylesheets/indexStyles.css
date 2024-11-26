@@ -1,5 +1,4 @@
 h1 {
-  color: goldenrod;
   text-align: center;
   font-size: 100px;
   padding-top: 2%;
@@ -14,9 +13,9 @@ h1 {
   font-size: 70px;
 }
 
-/* #suggestions {
-  padding-right: 4%;
-} */
+.error{
+  max-width: 1000px;
+}
 
 .suggestion {
   font-size: 70px;

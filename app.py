@@ -27,9 +27,6 @@ class PokemonIndividual(db.Model):
 
     family = db.relationship("PokemonFamily", back_populates="varieties")
 
-
-# f = open('names.txt', 'r')
-# allPokemonNames = [line.strip() for line in f]
     
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -71,8 +68,7 @@ def error(pokemonName):
 @app.route('/autocomplete')
 def autocomplete():
     query = request.args.get('query', '').capitalize()
-    matches = PokemonFamily.query.filter(PokemonFamily.name.like(f'{query}%')).all()
-    matches = matches[:5]
+    matches = PokemonFamily.query.filter(PokemonFamily.name.like(f'{query}%')).limit(5).all()
     suggestions = []
     for match in matches:
         name = match.name
