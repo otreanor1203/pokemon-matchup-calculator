@@ -4,6 +4,10 @@
 }
 
 #pokemonImage{
-    width: 150;
+    width: 150px;
     height: 150px;
+}
+
+.typeContainer{
+    font-size: 0;
 }

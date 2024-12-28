@@ -27,6 +27,17 @@ class Pokemon:
         print(self.image)
         print(self.type)
         print(self.weaknesses)
+
+    def toDict(self):
+        return {
+            "name": self.name,
+            "url": self.url,
+            "data": self.data,
+            "image": self.image,
+            "type": self.type,
+            "weaknesses": self.weaknesses,
+        }
+
         
 
 

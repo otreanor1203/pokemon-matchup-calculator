@@ -1,6 +1,6 @@
 const homeSearch = document.getElementById("homeSearch");
 const suggestionsDiv = document.getElementById("suggestions");
-const submitButton = document.getElementById("searchButton");
+const submitButton = document.getElementById("submitButton");
 
 homeSearch.addEventListener("input", async function () {
   const query = this.value;
@@ -35,5 +35,3 @@ function displaySuggestions(suggestions) {
     });
   });
 }
-
-
