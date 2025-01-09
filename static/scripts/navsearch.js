@@ -1,3 +1,5 @@
+// This file handles the autocomplete function for the small search bar in the navbar
+
 const navSearch = document.getElementById("navSearch");
 const suggestionsDiv = document.getElementById("suggestions");
 const submitButton = document.getElementById("submitButton");

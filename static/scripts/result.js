@@ -1,3 +1,5 @@
+// This file handles the user changing the variety on the result screen.
+
 const varietySelect = document.getElementById("varietySelect");
 const pokemonImage = document.getElementById("pokemonImage");
 const pokemonType = document.getElementById("pokemonType");
@@ -13,6 +15,7 @@ varietySelect.addEventListener("change", async function () {
     let nextType = document.createElement("img");
     nextType.src = "/static/typeIcons/" + type + ".png";
     nextType.alt = type;
+    nextType.className = "typeIconMain";
     pokemonType.appendChild(nextType);
   });
   const weaknesses = variety.weaknesses;
@@ -22,14 +25,21 @@ varietySelect.addEventListener("change", async function () {
 });
 
 const updateVariety = (category, types) => {
-  category.className = "typeContainer"
+  category.className = "typeContainer";
   const div = document.getElementById(category);
   div.innerHTML = "";
+  div.className = "typeContainer";
   types.forEach((type) => {
     let nextType = document.createElement("img");
     nextType.src = "/static/typeIcons/" + type + ".png";
     nextType.alt = type;
-    nextType.className = "typeContainer";
+    nextType.className = "typeIcon";
     div.appendChild(nextType);
   });
+  if (types.length === 0) {
+    let na = document.createElement("div");
+    na.id = "NA";
+    na.innerHTML = "N/A";
+    div.appendChild(na);
+  }
 };

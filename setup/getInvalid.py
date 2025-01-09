@@ -1,3 +1,8 @@
+# This file was used early in development to determine what pokemon worked when looking them up in pokeapi
+# and which ones needed to get their name modified (nidoran, mr. mime, etc). It writes to a file all of the names
+# that pokeapi couldn't find, which became 0 when I handled each one.
+# Must run this file from the testingandsetup directory.
+
 from calculate import getType, getPokemonData
 
 file = open('names.txt', 'r')

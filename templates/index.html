@@ -13,8 +13,8 @@
             Pokemon Not Found!
         </div>
         {% endif %}
-        <form class="d-flex" role="search" method = "POST">
-            <input class="form-control me-2 searchText" type="search" name = "homeSearch" id = "homeSearch" placeholder="Search" aria-label="Search">
+        <form autocomplete="off" class="d-flex" role="search" method = "POST">
+            <input class="form-control me-2 searchText" type="search" name = "homeSearch" id = "homeSearch" required = "true" placeholder="Search" aria-label="Search">
             <button class="btn btn-bgdark myButton" id = "submitButton" type="submit"><img src = "{{ url_for('static', filename='otherImages/magnifyingGlass.png') }}"></button>
         </form>
         <div id="suggestions"></div>

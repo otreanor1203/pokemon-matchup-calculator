@@ -1,3 +1,9 @@
+# This file generated the database that I use for this website. It has two classes, PokemonFamily which stores
+# each pokemon, and PokemonIndividual, which stores each pokemon variety as a separate entry.
+# This uses the calculate.py file heavily to fill in the info.
+# Must run this file from the testingandsetup directory.
+
+
 from sqlalchemy import JSON, ForeignKey, create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 from calculate import *

@@ -6,58 +6,12 @@
 
 {% block content %}
 
+<main>
+<div id = "content">
     <h1 id = "pokemonName">{{ pokemonName.capitalize() }}</h1>
     <img id = pokemonImage src= "{{ varietyList[index].image }}" alt = "{{ varietyList[index].name }}">
-    <h2>Type:</h2>
-    <div class = "typeContainer" id = "pokemonType">
-        {% for type in varietyList[index].type %}
-        <img class = "typeIcon" src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
-        {% endfor %}
-    </div>
-    <h3>Matchups:</h3>
-    <div>Immune:
-        <div class = "typeContainer" id = immune>
-        {% for type in varietyList[index].weaknesses.immune %}
-        <img class = "typeIcon" src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
-        {% endfor %}
-        </div>
-    </div>
-    <div>1/4x:
-        <div class = "typeContainer" id = superResistant>
-        {% for type in varietyList[index].weaknesses.superResistant %}
-        <img class = "typeIcon" src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
-        {% endfor %}
-        </div>
-    </div>
-    <div>Not Very Effective:
-        <div class = "typeContainer" id = "resistant">
-        {% for type in varietyList[index].weaknesses.resistant %}
-        <img class = "typeIcon" src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
-        {% endfor %}
-        </div>
-    </div>
-    <div>Neutral:
-        <div class = "typeContainer" id = "neutral">
-        {% for type in varietyList[index].weaknesses.neutral %}
-        <img class = "typeIcon" src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
-        {% endfor %}
-        </div>
-    </div>
-    <div>Super Effective:
-        <div class = "typeContainer" id = "weak">
-        {% for type in varietyList[index].weaknesses.weak %}
-        <img class = "typeIcon" src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
-        {% endfor %}
-        </div>
-    </div>
-    <div>4x:
-        <div class = "typeContainer" id = "superWeak">
-        {% for type in varietyList[index].weaknesses.superWeak %}
-        <img class = "typeIcon" src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
-        {% endfor %}
-        </div>
-    </div>
-
+    <div>
+    <label id = "varietyLabel" for = "varietySelect" class = "varietySelect">Variety:</label>    
     <select id = varietySelect>
         {% for variety in varietyList %}
         {% if loop.index0 == index %}
@@ -67,6 +21,70 @@
         {% endif %}
         {% endfor %}
     </select>
+    </div>
+    <h2 id = "typeLabel">Type:</h2>
+    <div class = "typeContainer" id = "pokemonType">
+        {% for type in varietyList[index].type %}
+        <img class = "typeIconMain" src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
+        {% endfor %}
+    </div>
+    <h3 id = "matchupLabel">Matchups:</h3>
+    <div class = "effLabel">Immune:</div>
+        <div class = "typeContainer" id = immune>
+        {% if not varietyList[index].weaknesses.immune %}
+        <div id = "NA">N/A</div>
+        {% endif %}
+        {% for type in varietyList[index].weaknesses.immune %}
+        <img class = "typeIcon" src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
+        {% endfor %}
+    </div>
+    <div class = "effLabel">1/4x:</div>
+        <div class = "typeContainer" id = superResistant>
+        {% if not varietyList[index].weaknesses.superResistant %}
+        <div id = "NA">N/A</div>
+        {% endif %}
+        {% for type in varietyList[index].weaknesses.superResistant %}
+        <img class = "typeIcon" src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
+        {% endfor %}
+        </div>
+    <div class = "effLabel">Not Very Effective:</div>
+        <div class = "typeContainer" id = "resistant">
+        {% if not varietyList[index].weaknesses.resistant %}
+        <div id = "NA">N/A</div>
+        {% endif %}
+        {% for type in varietyList[index].weaknesses.resistant %}
+        <img class = "typeIcon" src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
+        {% endfor %}
+        </div>
+    <div class = "effLabel">Neutral:</div>
+        <div class = "typeContainer" id = "neutral">
+        {% if not varietyList[index].weaknesses.neutral %}
+        <div id = "NA">N/A</div>
+        {% endif %}
+        {% for type in varietyList[index].weaknesses.neutral %}
+        <img class = "typeIcon" src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
+        {% endfor %}
+        </div>
+    <div class = "effLabel">Super Effective:</div>
+        <div class = "typeContainer" id = "weak">
+        {% if not varietyList[index].weaknesses.weak %}
+        <div id = "NA">N/A</div>
+        {% endif %}
+        {% for type in varietyList[index].weaknesses.weak %}
+        <img class = "typeIcon" src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
+        {% endfor %}
+        </div>
+    <div class = "effLabel">4x:</div>
+        <div class = "typeContainer" id = "superWeak">
+        {% if not varietyList[index].weaknesses.superWeak %}
+        <div id = "NA">N/A</div>
+        {% endif %}
+        {% for type in varietyList[index].weaknesses.superWeak %}
+        <img class = "typeIcon" src="{{ url_for('static', filename='typeIcons/' + type + '.png') }}" alt="{{ type }}">
+        {% endfor %}
+        </div>
+</div>
+</main>
     <script> const varietyList = {{ varietyList | tojson }};</script>
     <script src ="{{ url_for('static', filename='scripts/result.js') }}" ></script>
 </body>

@@ -1,17 +1,12 @@
+# This file does all of the logic to gather all of the pokemon info. It uses pokeapi to get all of the info.
+
 import requests
 import re
 
+# Simple Pokemon class to store all of the info for each pokemon
 class Pokemon:
 
-    def __init__(self, name, url, data):
-        self.name = name
-        self.url = url
-        self.data = data
-        self.image = ""
-        self.type = []
-        self.weaknesses = {}
-
-    def __init__(self, name, url, data, image, type, weaknesses):
+    def __init__(self, name, url, data, image = None, type = None, weaknesses = None):
         self.name = name
         self.url = url
         self.data = data
@@ -41,7 +36,7 @@ class Pokemon:
         
 
 
-
+# Function that takes in the species data from pokeapi and gets all of the info on each variety
 def getVarieties(species_data):
     if not species_data:
         return None
@@ -52,18 +47,18 @@ def getVarieties(species_data):
 
     return variety_names
 
-
-    
+# Function that takes in a pokemon name and gets the data from pokeapi
 def getPokemonData(pokemon_name):
+
     #Replace all instances of a space with a '-' for url compatability and apply regex
     pokemon_name = pokemon_name.replace(' ', '-')
     pattern = r'[^a-zA-Z0-9-]'
     pokemon_name = re.sub(pattern, '', pokemon_name)
 
-    #If the name results in nothing then we can just return None right away
     if not pokemon_name:
         return None
 
+    # There are two pokemon named nidoran (male and female) and so this is needed to differentiate between them.
     if(pokemon_name.lower() == "nidoranm" or pokemon_name.lower() == "nidoran male"):
         pokemon_name = "nidoran-m"
     elif(pokemon_name.lower() == "nidoranf" or pokemon_name.lower() == "nidoran female"):
@@ -71,11 +66,13 @@ def getPokemonData(pokemon_name):
 
     species_url = f"https://pokeapi.co/api/v2/pokemon-species/{pokemon_name.lower()}"
 
+    # First we get the variety info, which gets us the info of the pokemon family.
+    # This is then used later to get the info on each individual pokemon.
     species_response = requests.get(species_url)
 
     if species_response.status_code != 200:
         
-        print(f"{pokemon_name} not found!")
+        # print(f"{pokemon_name} not found!")
 
         return None
     
@@ -95,7 +92,7 @@ def getPokemonData(pokemon_name):
 
     return pokemon_varieties
     
-
+# Function that returns the type of a pokemon using it's data.
 def getType(pokemon):
     if not pokemon:
         return
@@ -109,6 +106,7 @@ def getType(pokemon):
 
     return pokemon_types
     
+# Function that gathers the types of each variety of a pokemon family
 def getAllTypes(pokemon_varieties):
     if not pokemon_varieties:
         return None
@@ -116,6 +114,8 @@ def getAllTypes(pokemon_varieties):
     for pokemon in pokemon_varieties:
         pokemon.type = getType(pokemon)
 
+# Function that calculates each pokemon's weaknesses by collecting info on each type using pokeapi and figuring out what each type is weak to
+# and strong against. It then gives it a value 0-5 for each type.
 def getWeaknesses(pokemon):
     if not pokemon:
         return None
@@ -179,6 +179,7 @@ def getWeaknesses(pokemon):
 
     return effectiveness
 
+# Function that takes in a value 0-5 from the previous function and returns a dictionary showing the weaknesses and strengths.
 def getEffectiveness(effectiveness):
 
     immune = []
@@ -203,7 +204,7 @@ def getEffectiveness(effectiveness):
         elif effectiveness[type] == 5:
             superWeak.append(type)
         else:
-            print("Error: Effectiveness value is not between 0-5\n")
+            print("Error: Effectiveness value is not between 0-5\n")    # Should never happen
 
     return {
         "immune": immune,
@@ -214,19 +215,21 @@ def getEffectiveness(effectiveness):
         "superWeak": superWeak
     }
 
+# Function that gets the type matchups for all varieties of a species.
 def getAllEffectiveness(pokemon_varieties):
-
     for pokemon in pokemon_varieties:
         pokemon.weaknesses = getEffectiveness(getWeaknesses(pokemon))
 
+# Function that gets the image for a pokemon
 def getImage(pokemon):
     return pokemon.data['sprites']['front_default']
 
+# Function that gets each image of a pokemon variety
 def getAllImages(pokemon_varieties):
     for pokemon in pokemon_varieties:
         pokemon.image = getImage(pokemon)
 
-
+# Function that calls the above 'all' functions to gather all of the info needed for a pokemon
 def getEverything(pokemon_name):
     if not pokemon_name:
         return None

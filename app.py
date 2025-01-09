@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, redirect, request, render_template, url_for, session
 import pickle
 from flask_sqlalchemy import SQLAlchemy
-from calculate import *
+from setup.calculate import *
 
 app = Flask(__name__)
 app.secret_key = "secret"
@@ -10,6 +10,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+# Class to manage the pokemon family database, which stores each pokemon's info
 class PokemonFamily(db.Model):
     __tablename__ = 'pokemon_family'
     id = db.Column(db.Integer, primary_key=True)
@@ -17,6 +18,7 @@ class PokemonFamily(db.Model):
 
     varieties = db.relationship("PokemonIndividual", back_populates="family")
 
+# Class to manage each pokemon variety as its own entry
 class PokemonIndividual(db.Model):
     __tablename__ = 'pokemon_individual'
     id = db.Column(db.Integer, primary_key=True)
@@ -29,7 +31,8 @@ class PokemonIndividual(db.Model):
 
     family = db.relationship("PokemonFamily", back_populates="varieties")
 
-    
+
+# Home page. Checks to see if a pokemon was entered and then redirects to the result page.
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -40,6 +43,10 @@ def index():
         return redirect(url_for('result', pokemonName = pokemonName))
     return render_template('index.html', isIndex = True)
 
+# Result page. Checks the database to see if the pokemon that was entered is valid, and then gathers the info on the variety
+# and puts each variety into a list. If the pokemon does not exist then it redirects into the error page, otherwise it displays the info.
+# If this someone searches for another pokemon on this page, then it will redirect to itself with that pokemon.
+# Session is used to store the pokemon name and current variety list
 @app.route('/result/<pokemonName>', methods = ['GET', 'POST'])
 def result(pokemonName):
     if request.method == 'POST':
@@ -58,6 +65,7 @@ def result(pokemonName):
     session["varietyList"] = pickle.dumps(varietyList)
     return render_template('result.html', pokemonName = pokemonName, varietyList = [variety.toDict() for variety in varietyList], index = 0)
 
+# About page
 @app.route('/about', methods=['GET', 'POST'])
 def about():
     if request.method == 'POST':
@@ -65,6 +73,7 @@ def about():
         return redirect(url_for('result', pokemonName = request.form['navSearch']))
     return render_template("about.html")
 
+# Error page.
 @app.route('/error/<pokemonName>', methods=['GET', 'POST'])
 def error(pokemonName):
     if request.method == 'POST':
@@ -72,6 +81,8 @@ def error(pokemonName):
         return redirect(url_for('result', pokemonName = request.form['navSearch']))
     return render_template('error.html')
 
+# Route used when autocompleting a search. Grabs the query from JS and determines if any pokemon can autocomplete the
+# search, and then sends over the first 5 pokemon name and image pairs.
 @app.route('/autocomplete')
 def autocomplete():
     query = request.args.get('query', '').capitalize()
@@ -86,11 +97,6 @@ def autocomplete():
 
     return jsonify(suggestions)
 
-# @app.route('/varietyChange')
-# def varietyChange():
-#     index = int(request.args.get('selectedIndex', ''))
-#     return redirect(url_for('result', pokemonName = session.get("currentPokemonName")))
-
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

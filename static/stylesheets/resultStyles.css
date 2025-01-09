@@ -1,13 +1,71 @@
-#pokemonName{
-    text-transform: capitalize;
-    font-weight: bolder;
+#pokemonName {
+  text-transform: capitalize;
+  font-weight: bolder;
+  font-size: 6vh;
 }
 
-#pokemonImage{
-    width: 150px;
-    height: 150px;
+#pokemonImage {
+  width: 22vh;
 }
 
-.typeContainer{
-    font-size: 0;
+#varietyLabel {
+  font-size: 4vh;
+}
+
+#typeLabel {
+  font-weight: bold;
+}
+
+.typeIcon {
+  width: 7vh;
+}
+
+.typeIconMain {
+  width: 9vh;
+}
+
+#matchupLabel {
+  font-weight: bold;
+}
+
+.typeContainer {
+  font-size: 0;
+}
+
+.effLabel {
+  font-size: 2vh;
+}
+
+#suggestions {
+  position: absolute;
+  width: 260px;
+  box-sizing: border-box;
+  background: white;
+}
+
+#suggestions div {
+  padding: 14px;
+  cursor: pointer;
+  border: 1px solid black;
+}
+
+#suggestions div:hover {
+  background: #949594;
+}
+
+#error {
+  font-size: 100px;
+  color: red;
+  text-align: center;
+}
+
+#content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#NA {
+  font-size: 2vh;
+  color: red;
 }

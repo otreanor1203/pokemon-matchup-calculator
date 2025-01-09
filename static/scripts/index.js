@@ -1,3 +1,5 @@
+// This file handles the autocomplete function for the big search bar on the home screen
+
 const homeSearch = document.getElementById("homeSearch");
 const suggestionsDiv = document.getElementById("suggestions");
 const submitButton = document.getElementById("submitButton");
@@ -20,7 +22,7 @@ function displaySuggestions(suggestions) {
     let image = pair[1];
     const div = document.createElement("div");
     div.innerText = name + " ";
-    div.classList.add("suggestion");
+    div.classList.add("suggestions");
     suggestionsDiv.appendChild(div);
     const img = document.createElement("img");
     img.src = image;
