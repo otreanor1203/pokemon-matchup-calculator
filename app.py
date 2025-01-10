@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, redirect, request, render_template, url_for, session
 import pickle
+import random
 from flask_sqlalchemy import SQLAlchemy
 from setup.calculate import *
 
@@ -51,10 +52,14 @@ def index():
 def result(pokemonName):
     if request.method == 'POST':
         return redirect(url_for('result', pokemonName = request.form['navSearch']))
-    pokemonName = pokemonName.capitalize()
+    pokemonName = pokemonName.title()
     family = PokemonFamily.query.filter_by(name=pokemonName).first()
     if not family:
-        return redirect(url_for('error', pokemonName = pokemonName))
+        pokemonName = pokemonName.capitalize()
+        family = PokemonFamily.query.filter_by(name=pokemonName).first()
+        if not family:
+            return redirect(url_for('error', pokemonName = pokemonName))
+    print(pokemonName)
     sqlVarieties = family.varieties
     varietyList = []
     for variety in sqlVarieties:
@@ -96,6 +101,17 @@ def autocomplete():
         suggestions.append(pair)
 
     return jsonify(suggestions)
+
+@app.route('/random')
+def randomPokemon():
+    numPokemon = PokemonFamily.query.count()
+    print(numPokemon)
+    randomNumber = random.randint(1, numPokemon)
+    print(randomNumber)
+    randomPokemon = PokemonFamily.query.offset(randomNumber-1).limit(1).first().name
+    print(randomPokemon)
+    return redirect(url_for('result', pokemonName = randomPokemon))
+
 
 
 if __name__ == '__main__':
