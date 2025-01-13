@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from setup.calculate import *
 
 app = Flask(__name__)
-app.secret_key = "secret"
+app.secret_key = "secret"       # Key does not really matter for this project
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pokemon.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

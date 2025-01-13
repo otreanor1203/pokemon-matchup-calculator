@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Pokemon App{% endblock %}
+{% block title %}Pokemon Matchup Calculator{% endblock %}
 
 {% block style %}<link rel = "stylesheet" href="{{ url_for('static', filename='styleSheets/indexStyles.css') }}">{% endblock %}
 
@@ -8,11 +8,6 @@
 
     <div class = "searchDiv">
         <h1>Enter a Pokemon</h1>
-        {% if error %}
-        <div class="alert alert-danger error" role="alert">
-            Pokemon Not Found!
-        </div>
-        {% endif %}
         <form autocomplete="off" class="d-flex" role="search" method = "POST">
             <input class="form-control me-2 searchText" type="search" name = "homeSearch" id = "homeSearch" required = "true" placeholder="Search" aria-label="Search">
             <button class="btn btn-bgdark myButton" id = "submitButton" type="submit"><img src = "{{ url_for('static', filename='otherImages/magnifyingGlass.png') }}"></button>
