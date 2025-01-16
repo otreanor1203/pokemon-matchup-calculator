@@ -102,6 +102,8 @@ def autocomplete():
 
     return jsonify(suggestions)
 
+# Function do handle the Random Pokemon button.
+# Picks a random number 1-1025 and goes to that row in the database.
 @app.route('/random')
 def randomPokemon():
     numPokemon = PokemonFamily.query.count()
